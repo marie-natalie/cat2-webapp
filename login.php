@@ -1,3 +1,34 @@
+<?php
+session_start();
+require 'config.php';
+$message = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    if ($username === '' || $password === '') {
+        $message = 'Please enter both username and password.';
+    } else {
+        $stmt = $conn->prepare('SELECT id, fullname, password_hash FROM users WHERE username = ?');
+        $stmt->bind_param('s', $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+
+        if ($user && password_verify($password, $user['password_hash'])) {
+            session_regenerate_id(true);
+            $_SESSION['user_id']  = $user['id'];
+            $_SESSION['username'] = $username;
+            $_SESSION['fullname'] = $user['fullname'];
+            header('Location: dashboard.php');
+            exit;
+        }
+        $message = 'Invalid username or password.';
+    }
+}
+?>
+  
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +39,11 @@
 </head>
 <body class="bg-light">
   <div class="container py-5" style="max-width:480px">
-   
+
+    <?php if ($message): ?>
+  <div class="alert alert-danger"><?= htmlspecialchars($message) ?></div>
+<?php endif; ?>
+
     <form method="POST" action="login.php">
       
       <div class="mb-3">
