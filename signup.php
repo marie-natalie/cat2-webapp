@@ -1,4 +1,4 @@
-?php
+<?php
 require 'config.php';
 $message = '';
 $alert = 'danger';
@@ -38,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="en">
-@@ -48,30 +11,26 @@
   <div class="container py-5" style="max-width:480px">
     <h2 class="text-center mb-4">Create your account</h2>
     
