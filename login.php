@@ -21,7 +21,7 @@
         <input type="password" name="password" class="form-control" minlength="8" required>
       </div>
       <button type="submit" class="btn btn-primary w-100">Log in</button>
-     
+      <p class="text-center mt-3">Not registered? <a href="signup.php">Sign up</a></p>
     </form>
   </div>
 </body>
